@@ -1,0 +1,84 @@
+==============>get
+CREATE OR REPLACE FUNCTION public.get_birim_yil_prodecure(pyil integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+declare
+    w record;
+    z int4;
+begin
+   return (select max(bt.yil) from birim_test bt where bt.yil > pyil);
+end;$function$
+;
+
+
+==============>List
+CREATE OR REPLACE FUNCTION public.get_birim_list_function()
+ RETURNS SETOF birim_test
+ LANGUAGE plpgsql
+AS $function$
+declare
+    w record;
+    z int4;
+begin
+   return query
+          select * from birim_test b order by b.ad;
+end;$function$
+;
+
+
+==============>sum
+CREATE OR REPLACE FUNCTION public.get_birim_sum_prodecure(pname character varying)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+declare
+    w record;
+    z int4;
+begin
+   return (select sum(b.top) from birim_test b where b.ad=pname);
+end;$function$
+;
+
+
+==============>create
+CREATE OR REPLACE PROCEDURE public.create_birim_prodecure(IN pid uuid, IN pname character varying, IN pkod character varying, IN pyil integer, IN ptop integer)
+ LANGUAGE plpgsql
+AS $procedure$
+declare
+    w record;
+    z int4;
+begin
+   	    insert into birim_test(id,ad,kod ,yil ,top) values(pid,pname,pkod,pyil,ptop);
+
+end;$procedure$
+;
+
+
+==============>update
+CREATE OR REPLACE PROCEDURE public.update_birim_prodecure(IN pid uuid, IN pname character varying, IN pkod character varying, IN pyil integer, IN ptop integer)
+ LANGUAGE plpgsql
+AS $procedure$
+declare
+    w record;
+    z int4;
+begin
+   	    update birim_test set ad=pname, kod=pkod, yil=pyil, top=ptop where id=pid;
+
+end;$procedure$
+;
+
+==============>delete
+CREATE OR REPLACE PROCEDURE public.delete_birim_prodecure(IN pid uuid)
+ LANGUAGE plpgsql
+AS $procedure$
+declare
+    w record;
+    z int4;
+begin
+   	    delete from birim_test where id=pid;
+
+end;$procedure$
+;
+
+
